@@ -39,7 +39,7 @@ function edgesforface(face)
         push!(ret, Edge(face[indices[1]], face[indices[2]]))
         indices .= circshift(indices, 1)
     end
-    ret
+    return ret
 end
 
 function edgesforpoint(p, faces)
@@ -107,7 +107,7 @@ function catmullclark(faces, iters, scene=nothing)
         nextfaces = catmullclarkstep(nextfaces)
         callback(nextfaces)
     end
-    nextfaces
+    return nextfaces
 end
 
 end # module
