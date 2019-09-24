@@ -1,4 +1,4 @@
-using CatmullClark, CatmullClarkGraphics
+using Makie, CatmullClark, CatmullClarkGraphics
 
 const inputpoints = [
     [-1.0, -1.0, -1.0],
