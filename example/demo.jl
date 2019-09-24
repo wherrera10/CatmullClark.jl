@@ -26,12 +26,6 @@ scene = drawfaces(faces, :black)
 display(scene)
 sleep(1)
 
-function displaycallback(faces)
-    drawfaces!(nextfaces, colors[i])
-    display(scene)
-    sleep(1)
-end
-
 catmullclark(faces, 4, displaycallback)
 
 println("Press Enter to continue", readline())
