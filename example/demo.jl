@@ -26,7 +26,7 @@ scene = drawfaces(faces, :black)
 display(scene)
 sleep(1)
 
-catmullclark(faces, 4, displaycallback)
+catmullclark(faces, 4, CatmullClarkGraphics.displaycallback)
 
 println("Press Enter to continue", readline())
 
