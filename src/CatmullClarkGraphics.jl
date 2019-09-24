@@ -1,6 +1,6 @@
 module CatmullClarkGraphics
 
-export drawfaces, drawfaces!, displaycallback
+export drawfaces, drawfaces!, displaycallback, getscene, setscene
 
 using Makie, .CatmullClark
 
@@ -11,6 +11,9 @@ drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
 const colors = [:red, :green, :blue, :gold]
 const iterconfig = [0, length(colors), nothing]
 
+setscene(s) = (iterconfig[3] = s)
+getscene() = iterconfig[3]
+
 function drawfaces(faces, colr)
     scene = drawface(faces[1], colr)
     if length(faces) > 1
@@ -18,7 +21,7 @@ function drawfaces(faces, colr)
             drawface!(f, colr)
         end
     end
-    iterconfig[3] = scene
+    setscene(scene)
     return scene
 end
 
