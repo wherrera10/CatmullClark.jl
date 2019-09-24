@@ -69,26 +69,28 @@ of http://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/10_Subdivisi
 The faces argument is a Vector{Face} of all the faces of the 3D object's surface.
 Returns: a set of the new faces, usually a 4 times larger vector of smaller faces.
 """
+
 function catmullclarkstep(faces)
-    d, E, dprime = Set(reduce(vcat, faces)), Dict{Vector, Point}(), Dict{Point, Point}()
-    for face in faces, (i, p) in enumerate(face)
-        edge = (p == face[end]) ? Edge(p, face[1]) : Edge(p, face[i + 1])
-        E[[edge, face]] = newedgepoint(edge, faces)
+    d, E = Set(reduce(vcat, faces)), Dict{Vector, Point}()
+    facepoints, dprime = Dict{Face, Point}(), Dict{Point, Point}()
+    for face in faces
+        facepoints[face] = mean(face)
+        for (i, p) in enumerate(face)
+            edge = (p == face[end]) ? Edge(p, face[1]) : Edge(p, face[i + 1])
+            E[[edge, face]] = newedgepoint(edge, faces)
+        end
     end
     for p in d
-        F = mean([mean(face) for face in facesforpoint(p, faces)])
+        F = mean([facepoints[face] for face in facesforpoint(p, faces)])
         pe = edgesforpoint(p, faces)
         R = mean(map(edgemidpoint, pe))
         n = length(pe)
         dprime[p] = (F + 2 * R + p * (n - 3)) / n
     end
     newfaces = Vector{Face}()
-    for face in faces
-        v = mean(face)
-        for point in face
-            fp1, fp2 = map(x -> E[[x, face]], adjacentedges(point, face))
-            push!(newfaces, [fp1, dprime[point], fp2, v])
-        end
+    for face in faces, point in face
+        fp1, fp2 = map(x -> E[[x, face]], adjacentedges(point, face))
+        push!(newfaces, [fp1, dprime[point], fp2, facepoints[face]])
     end
     return newfaces
 end
