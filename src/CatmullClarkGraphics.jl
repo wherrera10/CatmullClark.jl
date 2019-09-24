@@ -9,7 +9,7 @@ drawface(face, colr) = lines(facewrapped(face); color=colr)
 drawface!(face, colr) = lines!(facewrapped(face); color=colr)
 drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
 const colors = [:red, :green, :blue, :gold]
-const iterconfig = [0, length(colors)]
+const iterconfig = [0, length(colors), nothing]
 
 function drawfaces(faces, colr)
     scene = drawface(faces[1], colr)
@@ -18,13 +18,14 @@ function drawfaces(faces, colr)
             drawface!(f, colr)
         end
     end
+    iterconfig[3] = scene
     return scene
 end
 
 function displaycallback(faces)
     drawfaces!(nextfaces, colors[iterconfig[1] % iterconfig[2] + 1])
     iterconfig[1] +=1
-    display(scene)
+    iterconfig[3] != nothing && display(iterconfig[3])
     sleep(1)
 end
 
