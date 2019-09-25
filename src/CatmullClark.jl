@@ -2,7 +2,9 @@ module CatmullClark
 
 export catmullclarkstep, catmullclark
 
-using Statistics, GeometryTypes
+export drawfaces, drawfaces!, displaycallback, getscene, setscene
+
+using Statistics, GeometryTypes, Makie
 
 # Point3f0 is a 3-tuple of 32-bit floats for 3-dimensional space, and all Points are 3D.
 Point = Point3f0
@@ -110,13 +112,10 @@ function catmullclark(faces, iters, callback=(x)->0)
     end
     return nextfaces
 end
+
                         
-module CCGraphics
-
-export drawfaces, drawfaces!, displaycallback, getscene, setscene
-
-using Makie
-
+# The following functions are used in graphics display with Makie.
+                        
 facewrapped(face) = [face; face[1]]
 drawface(face, colr) = lines(facewrapped(face); color=colr)
 drawface!(face, colr) = lines!(facewrapped(face); color=colr)
@@ -145,7 +144,6 @@ function displaycallback(faces)
     sleep(1)
 end
 
-end # submodule CCGraphics
+end # module 
 
-end # module CatmullClark
 
