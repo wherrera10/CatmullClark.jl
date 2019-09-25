@@ -34,12 +34,9 @@ function newedgepoint(edge, faces)
 end
 
 function edgesforface(face)
-    ret, indices = Vector{Edge}(), collect(1:length(face))
-    for i in 1:length(face)-1
-        push!(ret, Edge(face[indices[1]], face[indices[2]]))
-        indices .= circshift(indices, 1)
-    end
-    return ret
+    len = length(face)
+    indices = [1:len; 1]
+    return [Edge(face[indices[i]], face[indices[i+1]]) for i in 1:len]
 end
 
 function edgesforpoint(p, faces)
