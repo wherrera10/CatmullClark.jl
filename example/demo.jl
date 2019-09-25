@@ -1,4 +1,4 @@
-using Makie, CatmullClark, CatmullClarkGraphics
+using Makie, CatmullClark
 
 const inputpoints = [
     [-1.0, -1.0, -1.0],
@@ -26,7 +26,7 @@ scene = drawfaces(faces, :black)
 display(scene)
 sleep(1)
 
-catmullclark(faces, 4, CatmullClarkGraphics.displaycallback)
+catmullclark(faces, 4, CatmullClark.displaycallback)
 
 println("Press Enter to continue", readline())
 
