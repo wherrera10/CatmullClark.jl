@@ -2,7 +2,7 @@ module CatmullClarkGraphics
 
 export drawfaces, drawfaces!, displaycallback, getscene, setscene
 
-using Makie, .CatmullClark
+using Makie
 
 facewrapped(face) = [face; face[1]]
 drawface(face, colr) = lines(facewrapped(face); color=colr)
