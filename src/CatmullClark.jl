@@ -1,4 +1,4 @@
-module CatmullCLark
+module CatmullClark
 
 export catmullclarkstep, catmullclark
 
