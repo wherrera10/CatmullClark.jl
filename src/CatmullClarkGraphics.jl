@@ -4,7 +4,7 @@ export drawfaces, drawfaces!, displaycallback, getscene, setscene
 
 using Makie, .CatmullClark
 
-facewrapped(face) = begin f = deepcopy(face); push!(f, f[1]); f end
+facewrapped(face) = [face; face[1]]
 drawface(face, colr) = lines(facewrapped(face); color=colr)
 drawface!(face, colr) = lines!(facewrapped(face); color=colr)
 drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
