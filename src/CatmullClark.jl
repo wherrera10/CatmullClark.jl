@@ -64,7 +64,7 @@ adjacentedges(point, face) = [Edge(point, x) for x in adjacentpoints(point, face
 """
     catmullclarkstep(faces)
 
-Perform a multistep Catmull-Clark subdivision of a surface. See Wikipedia or page 53
+Perform a single step of Catmull-Clark subdivision of a surface. See Wikipedia or page 53
 of http://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/10_Subdivision.pdf
 The faces argument is a Vector{Face} of all the faces of the 3D object's surface.
 Returns: a set of the new faces, usually a 4 times larger vector of smaller faces.
@@ -102,8 +102,8 @@ end
     catmullclark(faces, iters, callback=(x)->0)
 
 Perform a multistep Catmull-Clark subdivision of a surface.
-Does iters iterations. Will call a callback function 
-with the results of each iteration if one is provided.
+Does iters iterations (steps). Will call a callback function 
+with the results of each iteration (step) if one is provided.
 Returns: the faces of the final result.
 """
 function catmullclark(faces, iters, callback=(x)->0)
