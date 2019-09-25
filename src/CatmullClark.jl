@@ -110,10 +110,8 @@ function catmullclark(faces, iters, callback=(x)->0)
     end
     return nextfaces
 end
-
-end # module
-                                 
-module CatmullClarkGraphics
+                        
+module CCGraphics
 
 export drawfaces, drawfaces!, displaycallback, getscene, setscene
 
@@ -147,5 +145,7 @@ function displaycallback(faces)
     sleep(1)
 end
 
-end # module
+end # submodule CCGraphics
+
+end # module CatmullClark
 
