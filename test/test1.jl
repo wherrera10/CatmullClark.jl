@@ -18,6 +18,8 @@ const inputfaces = [
 
 const faces = [map(x -> Point3f0(inputpoints[x]), p .+ 1) for p in inputfaces]
 
+@test faces[3][4] == [1.0, 1.0, 1.0]
+
 const donutpoints = [
     [-2.0, -0.5, -2.0], [-2.0, -0.5, 2.0], [2.0, -0.5, -2.0], [2.0, -0.5, 2.0],
     [-1.0, -0.5, -1.0], [-1.0, -0.5, 1.0], [1.0, -0.5, -1.0], [1.0, -0.5, 1.0],
