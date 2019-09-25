@@ -88,9 +88,12 @@ function catmullclarkstep(faces)
         dprime[p] = (F + 2 * R + p * (n - 3)) / n
     end
     newfaces = Vector{Face}()
-    for face in faces, point in face
-        fp1, fp2 = map(x -> E[[x, face]], adjacentedges(point, face))
-        push!(newfaces, [fp1, dprime[point], fp2, facepoints[face]])
+    for face in faces
+        vertex = facepoints[face]
+        for point in face
+            fp1, fp2 = map(x -> E[[x, face]], adjacentedges(point, face))
+            push!(newfaces, [fp1, dprime[point], fp2, vertex])
+        end
     end
     return newfaces
 end
@@ -103,7 +106,7 @@ Does iters iterations. Will call a callback function
 with the results of each iteration if one is provided.
 Returns: the faces of the final result.
 """
-function catmullclark(faces, iters, scene=nothing)
+function catmullclark(faces, iters, callback=(x)->0)
     nextfaces = deepcopy(faces)
     for i in 1:iters
         nextfaces = catmullclarkstep(nextfaces)
