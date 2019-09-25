@@ -69,7 +69,6 @@ of http://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/10_Subdivisi
 The faces argument is a Vector{Face} of all the faces of the 3D object's surface.
 Returns: a set of the new faces, usually a 4 times larger vector of smaller faces.
 """
-
 function catmullclarkstep(faces)
     d, E = Set(reduce(vcat, faces)), Dict{Vector, Point}()
     facepoints, dprime = Dict{Face, Point}(), Dict{Point, Point}()
