@@ -123,10 +123,16 @@ drawface!(face, colr) = lines!(facewrapped(face); color=colr)
     drawfaces!(faces, colr)
     
 Draw a set of Faces using color colr and Makie.
+Add the drawing to the existing scene.
 """
 drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
 
-
+"""
+    drawfaces(faces, colr)
+    
+Draw a set of Faces using color colr and Makie. 
+Place this in a new scene (a new output window).
+"""
 function drawfaces(faces, colr)
     scene = drawface(faces[1], colr)
     if length(faces) > 1
