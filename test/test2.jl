@@ -1,6 +1,6 @@
-using Makie, CatmullClark
+using Makie, CatmullClark, Test
 
-# This is for code coverage.
+# This file's testing is for code coverage.
 
 const donutpoints = [
     [-2.0, -0.5, -2.0], [-2.0, -0.5, 2.0], [2.0, -0.5, -2.0], [2.0, -0.5, 2.0],
@@ -18,5 +18,14 @@ const donutfaces = [map(x -> Point3f0(donutpoints[x]), p .+ 1) for p in donutfac
 
 scene2 = drawfaces(donutfaces, :black)
 setscene(scene2)
+getscene()
 sleep(1)
 catmullclark(donutfaces, 1, CatmullClark.displaycallback)
+
+face = donutfaces[2]
+
+edge = CatmullClark.Edge(face[1], face[2])
+
+@test !CatmullClark.nexttohole(edge, donutfaces)
+
+@test_throws String CatmullClark.adjacentpoints(Point3f0(100, 100, 100), donutfaces)
