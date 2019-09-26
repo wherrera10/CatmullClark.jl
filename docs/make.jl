@@ -1,15 +1,11 @@
-using Documenter, OhMyREPL
+using Documenter
+using CatmullClark
 
 makedocs(
-    sitename = "CatmullClark",
-    pages = Any[
-        "Home" => "index.md",
-        "Installation" => "installation.md",
-        "Functions" => "Functions.md",
-    ]
+    sitename="CatmullClark.jl",
+    modules=[CatmullClark],
+    pages=["index.md", "examples.md", "reference.md", "devnotes.md"],
+    assets=["assets/custom.css"],
 )
 
-deploydocs(
-    repo = "github.com/wherrera10/CatmullClark.jl.git",
-)
-
+deploydocs(repo="github.com/wherrera10/CatmullClark.jl.git")
