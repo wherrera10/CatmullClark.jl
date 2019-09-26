@@ -100,7 +100,7 @@ end
     catmullclark(faces, iters, callback=(x)->0)
 
 Perform a multistep Catmull-Clark subdivision of a surface.
-Does iters iterations (steps). Will call a callback function 
+Does iters iterations (steps). Will call a callback function
 with the results of each iteration (step) if one is provided.
 Returns: the faces of the final result.
 """
@@ -113,18 +113,19 @@ function catmullclark(faces, iters, callback=(x)->0)
     return nextfaces
 end
 
-                        
 # The following functions are used in graphics display with Makie.
-                        
-facewrapped(face) = [face; face[1]]
+
+facewrapped(face) = (f = face[:]; push!(f, f[1]); f)
 drawface(face, colr) = lines(facewrapped(face); color=colr)
 drawface!(face, colr) = lines!(facewrapped(face); color=colr)
-drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
-const colors = [:red, :green, :blue, :gold]
-const iterconfig = [0, length(colors), nothing]
 
-setscene(s) = (iterconfig[3] = s)
-getscene() = iterconfig[3]
+"""
+    drawfaces!(faces, colr)
+    
+Draw a set of Faces using color colr and Makie.
+"""
+drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
+
 
 function drawfaces(faces, colr)
     scene = drawface(faces[1], colr)
@@ -133,17 +134,39 @@ function drawfaces(faces, colr)
             drawface!(f, colr)
         end
     end
-    setscene(scene)
-    return scene
+    scene
 end
 
+const colors = [:red, :green, :blue, :gold]
+const iterconfig = [0, length(colors), nothing]
+
+"""
+    setscene(scene)
+
+Set the Scene for display using Makie.
+"""
+setscene(s) = (iterconfig[3] = s)
+
+"""
+    setscene(scene)
+
+Get the Scene in use for display using Makie.
+"""
+getscene() = iterconfig[3]
+
+"""
+    displaycallback(faces)
+
+Display a set of Faces using Makie. This can be used as a
+callback to show the steps of the catmullclark function. See
+exsmple/demo.jl in this package for an example of usage.
+"""
 function displaycallback(faces)
-    drawfaces!(nextfaces, colors[iterconfig[1] % iterconfig[2] + 1])
+    drawfaces!(faces, colors[iterconfig[1] % iterconfig[2] + 1])
     iterconfig[1] +=1
     iterconfig[3] != nothing && display(iterconfig[3])
     sleep(1)
 end
 
-end # module 
 
-
+end # module
