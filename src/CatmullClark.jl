@@ -138,7 +138,7 @@ function drawfaces(faces, colr)
 end
 
 const colors = [:red, :green, :blue, :gold]
-const iterconfig = [0, length(colors), nothing]
+const iterconfig = [0, length(colors), Scene()]
 
 """
     setscene(scene)
