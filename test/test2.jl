@@ -26,7 +26,9 @@ face = donutfaces[2]
 
 edge = CatmullClark.Edge(face[1], face[2])
 
-p = CatmullClark.newedgepoint(edge, donutfaces)
+@test CatmullClark.newedgepoint(CatmullClark.Edge(Point3f0(100, 100, 100),
+    Point3f0(1, 1, 1)), donutfaces) == [50.5, 50.5, 50.5]
+
 
 @test !CatmullClark.nexttohole(edge, donutfaces)
 
