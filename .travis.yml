@@ -9,4 +9,9 @@ matrix:
     - julia: nightly
   fast_finish: true
 notifications:
-  email: false
+  email: false 
+after_success:
+  - julia -e 'using Pkg;
+      Pkg.add("Coverage");
+      using Coverage;
+      Coveralls.submit(Coveralls.process_folder())'
