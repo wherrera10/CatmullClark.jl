@@ -36,4 +36,12 @@ dfaces = [map(x -> Point3f0(donutpoints[x + 1]), p) for p in donutfaceindices]
 
 @test dfaces[1][1] == [-1.0, -0.5, -1.0]
 
+newfaces = catmullclark(faces, 2)
 
+@test newfaces[1][2][1] ≈ -0.71744794
+@test newfaces[1][2][3] ≈ 0.0
+
+newfaces = catmullclark(dfaces, 1)
+
+@test newfaces[2][3][1] == -1.125
+@test newfaces[2][3][3] == 0.0
