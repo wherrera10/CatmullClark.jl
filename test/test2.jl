@@ -1,6 +1,6 @@
 using Makie, CatmullClark, Test
 
-# This file's testing is for code coverage.
+# Will display a graphic briefly, needed for code coverage.
 
 const donutpoints = [
     [-2.0, -0.5, -2.0], [-2.0, -0.5, 2.0], [2.0, -0.5, -2.0], [2.0, -0.5, 2.0],
