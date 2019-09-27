@@ -1,7 +1,5 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-CatmullClark = "88c4633f-7fb9-5883-9312-8d9642ed46e5"
-
 
 [compat]
 Documenter = "0.24"
