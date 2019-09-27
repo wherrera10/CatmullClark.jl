@@ -7,4 +7,6 @@ makedocs(
     pages=["index.md", "examples.md", "reference.md", "devnotes.md"],
 )
 
-deploydocs(repo="github.com/wherrera10/CatmullClark.jl.git")
+deploydocs(
+    repo="github.com/wherrera10/CatmullClark.jl.git",
+)
