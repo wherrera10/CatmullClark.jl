@@ -154,7 +154,7 @@ Set the Scene for display using Makie.
 setscene(s) = (iterconfig[3] = s)
 
 """
-    setscene(scene)
+    getscene(scene)
 
 Get the Scene in use for display using Makie.
 """
@@ -165,7 +165,7 @@ getscene() = iterconfig[3]
 
 Display a set of Faces using Makie. This can be used as a
 callback to show the steps of the catmullclark function. See
-exsmple/demo.jl in this package for an example of usage.
+example/demo.jl in this package for an example of usage.
 """
 function displaycallback(faces)
     drawfaces!(faces, colors[iterconfig[1] % iterconfig[2] + 1])
