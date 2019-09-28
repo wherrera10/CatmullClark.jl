@@ -48,7 +48,7 @@ catmullclark(faces, 4, CatmullClark.displaycallback)
 
 # tetrahedron
 scene2 = drawfaces(tetrafaces, :black)
-scene2 title(scene, "Tetrahedron, 3 iterations", show_axis = false)
+scene2 = title(scene, "Tetrahedron, 3 iterations", show_axis = false)
 display(scene2)
 setscene(scene2)
 sleep(2)
