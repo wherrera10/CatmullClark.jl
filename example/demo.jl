@@ -40,7 +40,6 @@ const tetrafaces = [map(x -> Point3f0(tetrapoints[x]), p) for p in tetrafaceindi
 
 # cube, rounds toward a sphere
 scene = drawfaces(faces, :black)
-scene = title(scene, "Cube, 4 iterations", show_axis = false)
 display(scene)
 setscene(scene)
 sleep(1)
@@ -48,7 +47,6 @@ catmullclark(faces, 4, CatmullClark.displaycallback)
 
 # tetrahedron
 scene2 = drawfaces(tetrafaces, :black)
-scene2 = title(scene, "Tetrahedron, 3 iterations", show_axis = false)
 display(scene2)
 setscene(scene2)
 sleep(2)
@@ -56,7 +54,6 @@ catmullclark(tetrafaces, 3, CatmullClark.displaycallback)
 
 # torus
 scene3 = drawfaces(donutfaces, :black)
-scene3 = title(scene, "Torus, 3 iterations", show_axis = false)
 display(scene3)
 setscene(scene3)
 sleep(1)
@@ -65,11 +62,9 @@ catmullclark(donutfaces, 3, CatmullClark.displaycallback)
 # if a face missing in cube, makes cuplike shape
 sleep(3)
 scene4 = drawfaces(faces[2:end], :black)
-scene4 = title(scene, "Cube with back face missing, 3 iterations", show_axis = false)
 display(scene4)
 setscene(scene4)
 sleep(2)
 catmullclark(faces[2:end], 3, CatmullClark.displaycallback)
 
 println("Press Enter to continue", readline())
-
