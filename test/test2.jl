@@ -33,3 +33,10 @@ edge = CatmullClark.Edge(face[1], face[2])
 @test !CatmullClark.nexttohole(edge, donutfaces)
 
 @test_throws String CatmullClark.adjacentpoints(Point3f0(100, 100, 100), donutfaces)
+
+f = CatmullClark.edgesforface(face)[1]
+
+@test f.p1[3] == 2.0
+
+@test CatmullClark.edgemidpoint(f)[1] == 0.0
+
