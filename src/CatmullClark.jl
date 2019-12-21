@@ -4,7 +4,9 @@ export catmullclarkstep, catmullclark
 
 export drawfaces, drawfaces!, displaycallback, getscene, setscene
 
-using Statistics, GeometryTypes, Makie
+using GeometryTypes
+using Makie
+using Statistics
 
 # Point3f0 is a 3-tuple of 32-bit floats for 3-dimensional space, and all Points are 3D.
 Point = Point3f0
@@ -121,7 +123,7 @@ drawface!(face, colr) = lines!(facewrapped(face); color=colr)
 
 """
     drawfaces!(faces, colr)
-    
+
 Draw a set of Faces using color colr and Makie.
 Add the drawing to the existing scene.
 """
@@ -129,8 +131,8 @@ drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
 
 """
     drawfaces(faces, colr)
-    
-Draw a set of Faces using color colr and Makie. 
+
+Draw a set of Faces using color colr and Makie.
 Place this in a new scene (a new output window).
 """
 function drawfaces(faces, colr)
@@ -140,7 +142,7 @@ function drawfaces(faces, colr)
             drawface!(f, colr)
         end
     end
-    scene
+    return scene
 end
 
 const colors = [:red, :green, :blue, :gold]
@@ -154,7 +156,7 @@ Set the Scene for display using Makie.
 setscene(s) = (iterconfig[3] = s)
 
 """
-    getscene(scene)
+    setscene(scene)
 
 Get the Scene in use for display using Makie.
 """
@@ -165,7 +167,7 @@ getscene() = iterconfig[3]
 
 Display a set of Faces using Makie. This can be used as a
 callback to show the steps of the catmullclark function. See
-example/demo.jl in this package for an example of usage.
+exsmple/demo.jl in this package for an example of usage.
 """
 function displaycallback(faces)
     drawfaces!(faces, colors[iterconfig[1] % iterconfig[2] + 1])
