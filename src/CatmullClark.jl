@@ -9,15 +9,13 @@ using Makie
 using Statistics
 
 # Point3f0 is a 3-tuple of 32-bit floats for 3-dimensional space, and all Points are 3D.
-Point = Point3f0
-
 # a Face is defined by the points that are its vertices, in order.
-Face = Vector{Point}
+Face = Vector{Point3f0}
 
 # an Edge is a line segment where the points are sorted
 struct Edge
-    p1::Point
-    p2::Point
+    p1::Point3f0
+    p2::Point3f0
     Edge(a, b) = new(min(a, b), max(a, b))
 end
 
@@ -64,15 +62,14 @@ adjacentedges(point, face) = [Edge(point, x) for x in adjacentpoints(point, face
 
 """
     catmullclarkstep(faces)
-
 Perform a single step of Catmull-Clark subdivision of a surface. See Wikipedia or page 53
 of http://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/10_Subdivision.pdf
 The faces argument is a Vector{Face} of all the faces of the 3D object's surface.
 Returns: a set of the new faces, usually a 4 times larger vector of smaller faces.
 """
 function catmullclarkstep(faces)
-    d, E = Set(reduce(vcat, faces)), Dict{Vector, Point}()
-    facepoints, dprime = Dict{Face, Point}(), Dict{Point, Point}()
+    d, E = Set(reduce(vcat, faces)), Dict{Vector, Point3f0}()
+    facepoints, dprime = Dict{Face, Point3f0}(), Dict{Point3f0, Point3f0}()
     for face in faces
         facepoints[face] = mean(face)
         for (i, p) in enumerate(face)
@@ -100,7 +97,6 @@ end
 
 """
     catmullclark(faces, iters, callback=(x)->0)
-
 Perform a multistep Catmull-Clark subdivision of a surface.
 Does iters iterations (steps). Will call a callback function
 with the results of each iteration (step) if one is provided.
@@ -123,7 +119,6 @@ drawface!(face, colr) = lines!(facewrapped(face); color=colr)
 
 """
     drawfaces!(faces, colr)
-
 Draw a set of Faces using color colr and Makie.
 Add the drawing to the existing scene.
 """
@@ -131,7 +126,6 @@ drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
 
 """
     drawfaces(faces, colr)
-
 Draw a set of Faces using color colr and Makie.
 Place this in a new scene (a new output window).
 """
@@ -150,21 +144,18 @@ const iterconfig = [0, length(colors), Scene()]
 
 """
     setscene(scene)
-
 Set the Scene for display using Makie.
 """
 setscene(s) = (iterconfig[3] = s)
 
 """
     setscene(scene)
-
 Get the Scene in use for display using Makie.
 """
 getscene() = iterconfig[3]
 
 """
     displaycallback(faces)
-
 Display a set of Faces using Makie. This can be used as a
 callback to show the steps of the catmullclark function. See
 exsmple/demo.jl in this package for an example of usage.
