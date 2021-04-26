@@ -15,8 +15,8 @@ Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 
 [compat]
 julia = "1"
-GeometryBasics = "0.1, 2.0"
-Makie = "0.1, 2.0"
+GeometryBasics = "0.1, 0.2, 0.3"
+Makie = "0.11, 0.12, 0.13, 0.14, 0.15"
 
 [targets]
 test = ["Pkg", "Test"]
