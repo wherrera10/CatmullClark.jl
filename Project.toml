@@ -1,7 +1,7 @@
 authors = ["William Herrera <wherrera@alahonua.com>"]
 name = "CatmullClark"
 uuid = "88c4633f-7fb9-5883-9312-8d9642ed46e5"
-version = "0.0.4"
+version = "0.0.3"
 
 [deps]
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
