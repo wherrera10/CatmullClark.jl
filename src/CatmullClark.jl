@@ -10,7 +10,6 @@ using Statistics
 
 # Point3f0 is a 3-tuple of 32-bit floats for 3-dimensional space, and all Points are 3D.
 # a Face is defined by the points that are its vertices, in order.
-#Point3f0 = GeometryTypes.Point3f0
 Face = Vector{Point3f0}
 
 # an Edge is a line segment where the points are sorted
