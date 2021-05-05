@@ -4,7 +4,6 @@ export catmullclarkstep, catmullclark
 
 export drawfaces, drawfaces!, displaycallback, getscene, setscene
 
-using GeometryBasics
 using Makie
 using Statistics
 
