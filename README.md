@@ -147,7 +147,7 @@ exsmple/demo.jl in this package for an example of usage.
 
 ## Installation
 
-The package gereally requires Makie, at least for the geometry types defined via that package.
+The package generally requires Makie, at least for the geometry types defined via that package.
 
 You may install the package from Github in the usual way, or to install the current master copy:
 
