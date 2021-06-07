@@ -6,7 +6,7 @@
 
 Julia graphics package for 3D surface smoothing using the Catmull-Clark subdivision algorithm. Uses Makie for display.
 
-## Functions
+## Usage
 
     Face = Vector{Point3f0}
 
@@ -151,3 +151,9 @@ You may install the package from Github in the usual way, or to install the curr
 
     using Pkg
     Pkg.add("http://github.com/wherrera10/CatmullClark.jl")
+
+## Functions
+
+```@autodocs
+Modules = [CatmullClark]
+```
