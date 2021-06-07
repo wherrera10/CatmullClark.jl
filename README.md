@@ -11,15 +11,19 @@
 ## Functions
 
     Face = Vector{Point3f0}
+
 Point3f0 is a 3-tuple of 32-bit floats for 3-dimensional space, and all Points are 3D. 
 A Face is defined by the points that are its vertices, in order.
-<br /><br />
+<br /><br /><br />
+
     struct Edge
         p1::Point3f0
         p2::Point3f0
         Edge(a, b) = new(min(a, b), max(a, b))
     end
+
 An Edge is a line segment where the points are sorted.
+<br /><br /><br />
 
 
     catmullclarkstep(faces)
