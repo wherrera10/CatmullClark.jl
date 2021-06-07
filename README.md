@@ -25,6 +25,11 @@ A Face is defined by the points that are its vertices, in order.
 An Edge is a line segment where the points are sorted.
 <br /><br /><br />
 
+    const colors = [:red, :green, :blue, :gold]
+    const iterconfig = [0, length(colors), Scene()]
+
+<br /><br /><br />
+
 
     catmullclarkstep(faces)
 
@@ -50,6 +55,13 @@ Place this in a new scene (a new output window).
 Draw a set of Faces using color colr and Makie.
 Add the drawing to the existing scene.
 <br /><br /><br />
+
+
+    setscene(scene)
+
+Set the Scene for display using Makie.
+<br /><br /><br />
+
 
     displaycallback(faces)
 Display a set of Faces using Makie. This can be used as a
