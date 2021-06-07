@@ -148,8 +148,8 @@ Set the Scene for display using Makie.
 setscene(s) = (iterconfig[3] = s)
 
 """
-    setscene(scene)
-Get the Scene in use for display using Makie.
+    getscene()
+Get the Makie.jl Scene in use for display by the package.
 """
 getscene() = iterconfig[3]
 
