@@ -12,8 +12,8 @@
 
     Face = Vector{Point3f0}
 
-Point3f0 is a 3-tuple of 32-bit floats for 3-dimensional space, and all Points are 3D. 
-A Face is defined by the points that are its vertices, in order.
+`Point3f0` is a 3-tuple of 32-bit floats for 3-dimensional space, and all `Point`s are 3D. 
+A `Face` is defined by the points that are its vertices, in order.
 <br /><br /><br />
 
     struct Edge
@@ -22,7 +22,7 @@ A Face is defined by the points that are its vertices, in order.
         Edge(a, b) = new(min(a, b), max(a, b))
     end
 
-An Edge is a line segment where the points are sorted.
+An `Edge` is a line segment where the two `Point`s are sorted.
 <br /><br /><br />
 
     const colors = [:red, :green, :blue, :gold]
@@ -35,37 +35,37 @@ An Edge is a line segment where the points are sorted.
 
 Perform a single step of Catmull-Clark subdivision of a surface. See Wikipedia or page 53
 of http://graphics.stanford.edu/courses/cs468-10-fall/LectureSlides/10_Subdivision.pdf
-The faces argument is a Vector{Face} of all the faces of the 3D object's surface.
+The `faces` argument is a `Vector{Face}` of all the faces of the 3D object's surface.
 Returns: a set of the new faces, usually a 4 times larger vector of smaller faces.
 <br /><br /><br />
 
     catmullclark(faces, iters, callback=(x)->0)
 Perform a multistep Catmull-Clark subdivision of a surface.
-Does iters iterations (steps). Will call a callback function
+Does `iters` iterations (steps). Will call a callback function
 with the results of each iteration (step) if one is provided.
 Returns: the faces of the final result.
 <br /><br /><br />
 
     drawfaces(faces, colr)
-Draw a set of Faces using color colr and Makie.
-Place this in a new scene (a new output window).
+Draw a set of `Faces` using color `colr` and `Makie`.
+Place this in a new `Scene` (a new output window).
 <br /><br /><br />
 
     drawfaces!(faces, colr)
-Draw a set of Faces using color colr and Makie.
+Draw a set of `Faces` using color `colr` and `Makie`.
 Add the drawing to the existing scene.
 <br /><br /><br />
 
 
     setscene(scene)
 
-Set the Scene for display using Makie.
+Set the `Scene` for display using `Makie`.
 <br /><br /><br />
 
 
     displaycallback(faces)
-Display a set of Faces using Makie. This can be used as a
-callback to show the steps of the catmullclark function. See
+Display a set of `Faces` using `Makie`. This can be used as a
+callback to show the steps of the `catmullclark` function. See
 exsmple/demo.jl in this package for an example of usage.
 <br /><br /><br />
 
