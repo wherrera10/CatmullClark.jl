@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.com/wherrera10/CatmullClark.jl.svg?branch=master)](https://travis-ci.org/wherrera10/CatmullClark.jl)
 [![Coverage Status](https://coveralls.io/repos/github/wherrera10/CatmullClark.jl/badge.svg?service=github)](https://coveralls.io/github/wherrera10/CatmullClark.jl)
 
+<img src="https://github.com/wherrera10/CatmullClark.jl/blob/main/docs/src/donut.png">
 
  Julia graphics package for 3D surface smoothing using the Catmull-Clark subdivision algorithm.
 
