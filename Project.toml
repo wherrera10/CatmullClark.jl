@@ -1,12 +1,13 @@
 name = "CatmullClark"
 uuid = "88c4633f-7fb9-5883-9312-8d9642ed46e5"
 authors = ["William Herrera <wherrera@alahonua.com>"]
-version = "0.1.4"
+version = "0.1.5"
 
 [deps]
 GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
 Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
 Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+ThreadSafeDicts = "4239201d-c60e-5e0a-9702-85d713665ba7"
 
 [compat]
 julia = "1"
