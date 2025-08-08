@@ -4,7 +4,7 @@ export catmullclarkstep, catmullclark
 
 export drawfaces, drawfaces!, displaycallback, getscene, setscene
 
-using Makie, GeometryBasics, Statistics
+using Makie, GeometryBasics, Statistics, ThreadSafeDicts
 
 # Point3f is the modern type for a 3-tuple of 32-bit floats.
 # A Face is defined by the points that are its vertices.
@@ -68,11 +68,11 @@ Returns: a `Vector` of the new faces.
 """
 function catmullclarkstep(faces)
     d = Set(reduce(vcat, faces))
-    E = Dict{Tuple{Edge, Face}, Point3f}()
-    facepoints = Dict{Face, Point3f}()
-    dprime = Dict{Point3f, Point3f}()
+    E = ThreadSafeDict{Tuple{Edge, Face}, Point3f}()
+    facepoints = ThreadSafeDict{Face, Point3f}()
+    dprime = ThreadSafeDict{Point3f, Point3f}()
 
-    for face in faces
+    Threads.@threads for face in faces
         facepoints[face] = mean(face)
         for (i, p) in enumerate(face)
             edge = (p == face[end]) ? Edge(p, face[1]) : Edge(p, face[i + 1])
@@ -100,6 +100,114 @@ function catmullclarkstep(faces)
     end
     return newfaces
 end
+
+"""
+    catmullclarkstep_threaded(faces)
+
+Multi-threaded version of catmullclarkstep using ThreadSafeDicts.
+Perform a single step of Catmull-Clark subdivision of a surface.
+The faces argument is a `Vector{Face}` of all the faces of the 3D object's surface.
+Returns: a `Vector` of the new faces.
+"""
+function catmullclarkstep_threaded(faces)
+    d = Set(reduce(vcat, faces))
+    E = ThreadSafeDict{Tuple{Edge, Face}, Point3f}()
+    facepoints = ThreadSafeDict{Face, Point3f}()
+    dprime = ThreadSafeDict{Point3f, Point3f}()
+
+    Threads.@threads for face in faces
+        facepoints[face] = mean(face)
+        for (i, p) in enumerate(face)
+            edge = (p == face[end]) ? Edge(p, face[1]) : Edge(p, face[i + 1])
+            E[(edge, face)] = newedgepoint(edge, faces)
+        end
+    end
+
+    dvec = collect(d)  # Convert Set to Vector for threading
+    Threads.@threads for p in dvec
+        faces_with_p = facesforpoint(p, faces)
+        F = mean([facepoints[face] for face in faces_with_p])
+        pe = edgesforpoint(p, faces)
+        R = mean(map(edgemidpoint, pe))
+        n = length(pe)
+        dprime[p] = (F + 2 * R + p * (n - 3)) / n
+    end
+    
+    newfaces = Face[]
+    for face in faces
+        vertex = facepoints[face]
+        for point in face
+            adjacent_edges = adjacentedges(point, face)
+            fp1 = E[(adjacent_edges[1], face)]
+            fp2 = E[(adjacent_edges[2], face)]
+            push!(newfaces, [fp1, dprime[point], fp2, vertex])
+        end
+    end
+    return newfaces
+end
+
+"""
+    catmullclarkstep_threaded2(faces)
+
+Perform a single step of Catmull-Clark subdivision of a surface.
+The faces argument is a `Vector{Face}` of all the faces of the 3D object's surface.
+Returns: a `Vector` of the new faces. Multithreaded for generally faster execution.
+"""
+function catmullclarkstep_threaded2(faces)
+    d = collect(Set(reduce(vcat, faces)))
+    nfaces = length(faces)
+    npoints = length(d)
+ 
+    facepoints = Vector{Point3f}(undef, nfaces)
+    Threads.@threads for i in 1:nfaces
+        facepoints[i] = mean(faces[i])
+    end
+    
+    face2idx = Dict(face => i for (i, face) in enumerate(faces))    
+    alledges = Set{Edge}()
+    for face in faces
+        union!(alledges, edgesforface(face))
+    end
+    
+    edgelist = collect(alledges)
+    nedges = length(edgelist)
+    edgepoints = Vector{Point3f}(undef, nedges)    
+    Threads.@threads for i in 1:nedges
+        edgepoints[i] = newedgepoint(edgelist[i], faces)
+    end
+    
+    edge2point = Dict(edgelist[i] => edgepoints[i] for i in 1:nedges)    
+    newpoints = Vector{Point3f}(undef, npoints)    
+    Threads.@threads for i in 1:npoints
+        p = d[i]
+        pointfaces = facesforpoint(p, faces)
+        F = mean([facepoints[face2idx[face]] for face in pointfaces])
+        
+        pe = edgesforpoint(p, faces)
+        R = mean(map(edgemidpoint, pe))
+        n = length(pe)
+        newpoints[i] = (F + 2 * R + p * (n - 3)) / n
+    end
+    
+    point2new = Dict(d[i] => newpoints[i] for i in 1:npoints)
+    facechunks = [Face[] for _ in 1:Threads.nthreads()]
+    tasks = map(facechunks) do chunk
+        Threads.@spawn begin
+            for (face_idx, face) in collect(enumerate(faces))
+                vertex = facepoints[face_idx]
+                for point in face
+                    adjacent_edges = adjacentedges(point, face)
+                    fp1 = edge2point[adjacent_edges[1]]
+                    fp2 = edge2point[adjacent_edges[2]]
+                    push!(chunk, [fp1, point2new[point], fp2, vertex])
+                end
+            end
+        end
+    end
+    wait.(tasks)
+    return reduce(vcat, facechunks)
+end
+
 
 """
     catmullclark(faces, iters, callback=(x)->nothing)
