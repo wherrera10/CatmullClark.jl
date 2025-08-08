@@ -1,5 +1,3 @@
-const Point3f = Point3f0
-
 @testset "test 1" begin 
     inputpoints = [
         [-1.0, -1.0, -1.0],
