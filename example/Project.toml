@@ -1,0 +1,5 @@
+[deps]
+CatmullClark = "88c4633f-7fb9-5883-9312-8d9642ed46e5"
+GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
+Makie = "ee78f7c6-11fb-53f2-987a-cfe4a2b5a57a"
