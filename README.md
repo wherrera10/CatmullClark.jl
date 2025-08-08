@@ -12,13 +12,13 @@
 
     Face = Vector{Point3f0}
 
-`Point3f0` is a 3-tuple of 32-bit floats for 3-dimensional space, and all `Point`s are 3D. 
+`Point3f` is a 3-tuple of 32-bit floats for 3-dimensional space, and all `Point`s are 3D. 
 A `Face` is defined by the points that are its vertices, in order.
 <br /><br /><br />
 
     struct Edge
-        p1::Point3f0
-        p2::Point3f0
+        p1::Point3f
+        p2::Point3f
         Edge(a, b) = new(min(a, b), max(a, b))
     end
 
@@ -107,9 +107,9 @@ exsmple/demo.jl in this package for an example of usage.
     
     const tetrafaceindices = [[1, 2, 3], [1, 3, 4], [2, 3, 4], [1, 2, 4]]
     
-    const faces = [map(x -> Point3f0(inputpoints[x]), p .+ 1) for p in inputfaces]
-    const donutfaces = [map(x -> Point3f0(donutpoints[x]), p .+ 1) for p in donutfaceindices]
-    const tetrafaces = [map(x -> Point3f0(tetrapoints[x]), p) for p in tetrafaceindices]
+    const faces = [map(x -> Point3f(inputpoints[x]), p .+ 1) for p in inputfaces]
+    const donutfaces = [map(x -> Point3f(donutpoints[x]), p .+ 1) for p in donutfaceindices]
+    const tetrafaces = [map(x -> Point3f(tetrapoints[x]), p) for p in tetrafaceindices]
     
     # cube, rounds toward a sphere
     scene = drawfaces(faces, :black)
