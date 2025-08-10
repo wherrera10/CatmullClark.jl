@@ -10,7 +10,7 @@
 
 ## Functions
 
-    Face = Vector{Point3f0}
+    Face = Vector{Point3f}
 
 `Point3f` is a 3-tuple of 32-bit floats for 3-dimensional space, and all `Point`s are 3D. 
 A `Face` is defined by the points that are its vertices, in order.
@@ -147,7 +147,7 @@ exsmple/demo.jl in this package for an example of usage.
 
 ## Installation
 
-The package generally requires Makie, at least for the geometry types defined via that package.
+The package generally requires Makie and its GeometryBasics, at least for the geometry types defined via that package.
 
 You may install the package from Github in the usual way, or to install the current master copy:
 
