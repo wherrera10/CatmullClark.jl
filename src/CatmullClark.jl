@@ -1,23 +1,29 @@
+""" CatmullClark subdivision for Makie plotting """
 module CatmullClark
 
-export catmullclarkstep, catmullclark
-
+export catmullclarkstep, catmullclark, Point3f
 export drawfaces, drawfaces!, displaycallback, getscene, setscene
 
-using Makie, GeometryBasics, Statistics, ThreadSafeDicts
+
+using Statistics
+using GeometryBasics
+using GLMakie
+using Base.Threads
+using ThreadSafeDicts
+
 
 # Point3f is the modern type for a 3-tuple of 32-bit floats.
 # A Face is defined by the points that are its vertices.
-Face = Vector{Point3f}
+Face = Vector{GeometryBasics.Point3f}
 
-# An Edge is a line segment, with points sorted for canonical representation.
+""" An Edge is a line segment, with points sorted for canonical representation. """
 struct Edge
-    p1::Point3f
-    p2::Point3f
+    p1::GeometryBasics.Point3f
+    p2::GeometryBasics.Point3f
     Edge(a, b) = new(min(a, b), max(a, b))
 end
 
-edgemidpoint(edge) = (edge.p1 + edge.p2) / 2.0
+edgemidpoint(edge) = (edge.p1 + edge.p2) / 2.0f0
 facesforpoint(p, faces) = [f for f in faces if p in f]
 facesforedge(e, faces) = [f for f in faces if (e.p1 in f) && (e.p2 in f)]
 nexttohole(edge, faces) = length(facesforedge(edge, faces)) < 2
@@ -26,11 +32,11 @@ function newedgepoint(edge, faces)
     f = facesforedge(edge, faces)
     p1, p2, len = edge.p1, edge.p2, length(f)
     if len == 2
-        return (p1 + p2 + mean(f[1]) + mean(f[2])) / 4.0
+        return (p1 + p2 + mean(f[1]) + mean(f[2])) / 4.0f0
     elseif len == 1
-        return (p1 + p2 + mean(f[1])) / 3.0
+        return (p1 + p2 + mean(f[1])) / 3.0f0
     end
-    return (p1 + p2) / 2.0
+    return (p1 + p2) / 2.0f0
 end
 
 function edgesforface(face)
@@ -80,7 +86,7 @@ function catmullclarkstep(faces)
         end
     end
 
-    dvec = collect(d)  # Convert Set to Vector for threading
+    dvec = collect(d)
     Threads.@threads for p in dvec
         faceswithp = facesforpoint(p, faces)
         F = mean([facepoints[face] for face in faceswithp])
@@ -120,7 +126,7 @@ with the results of each iteration (step) if one is provided.
 Returns: the faces of the final result.
 """
 function catmullclark(faces, iters, callback = (x)->nothing)
-    nextfaces = deepcopy(faces)
+    nextfaces = faces
     for _ in 1:iters
         nextfaces = catmullclarkstep(nextfaces)
         callback(nextfaces)
@@ -128,8 +134,7 @@ function catmullclark(faces, iters, callback = (x)->nothing)
     return nextfaces
 end
 
-# The following functions are used in graphics display with Makie.
-
+# The following helper functions are used in graphics display with Makie.
 facewrapped(face) = (f = deepcopy(face); push!(f, f[1]); f)
 drawface(face, colr) = lines(facewrapped(face); color = colr)
 drawface!(face, colr) = lines!(facewrapped(face); color = colr)
@@ -139,10 +144,7 @@ drawface!(face, colr) = lines!(facewrapped(face); color = colr)
 Draw a set of Faces using color colr and Makie.
 Add the drawing to the existing scene.
 """
-drawfaces!(faces, colr) =
-    for f in faces
-        drawface!(f, colr)
-    end
+drawfaces!(faces, colr) = for f in faces drawface!(f, colr) end
 
 """
     drawfaces(faces, colr)
@@ -162,8 +164,8 @@ function drawfaces(faces, colr)
     return ax.scene
 end
 
-const colors = [:red, :green, :blue, :gold]
-const iterconfig = Ref((0, length(colors), Scene()))
+const democolors = [:red, :green, :blue, :gold]
+const iterconfig = Ref((0, length(democolors), Scene()))
 
 """
     setscene(scene)
@@ -185,10 +187,11 @@ callback to show the steps of the catmullclark function.
 """
 function displaycallback(faces)
     idx, num_colors, scene = iterconfig[]
-    drawfaces!(faces, colors[idx%num_colors+1])
+    drawfaces!(faces, democolors[idx%num_colors+1])
     iterconfig[] = (idx + 1, num_colors, scene)
 
     sleep(1)
 end
 
-end # module
+
+end # module CatmullClark
