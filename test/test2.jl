@@ -19,15 +19,14 @@
     setscene(scene2)
     getscene()
     sleep(1)
-    
+
     # Perform a single subdivision step with the display callback
     catmullclark(donutfaces, 1, CatmullClark.displaycallback)
 
     face = donutfaces[2]
 
     # Test newedgepoint
-    # The CatmullClark.newedgepoint function requires a valid Edge and the faces array
-    # An isolated edge (like the one originally in the test case) will return the midpoint of the edge.
+    # NB: the newedgepoint function requires a valid Edge and its faces array
     @test CatmullClark.newedgepoint(CatmullClark.Edge(Point3f(100, 100, 100), Point3f(1, 1, 1)), donutfaces) == Point3f(50.5, 50.5, 50.5)
 
     # Test nexttohole
