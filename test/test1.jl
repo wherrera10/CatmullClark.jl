@@ -1,4 +1,4 @@
-@testset "test 1" begin 
+@testset "test 1" begin
     inputpoints = [
         [-1.0, -1.0, -1.0],
         [-1.0, -1.0, 1.0],
@@ -33,7 +33,6 @@
         [0, 1, 9, 8], [1, 3, 11, 9], [2, 0, 8, 10], [3, 2, 10, 11],
         [12, 13, 5, 4], [13, 15, 7, 5], [14, 12, 4, 6], [15, 14, 6, 7]]
 
-    # Updated to use Point3f
     dfaces = [map(x -> Point3f(donutpoints[x + 1]...), p) for p in donutfaceindices]
 
     @test dfaces[1][1] == Point3f(-1.0, -0.5, -1.0)
@@ -46,13 +45,11 @@
 
     ## test torus
     newfaces_torus = catmullclark(dfaces, 1)
-
     @test newfaces_torus[2][3][1] == -1.125
     @test newfaces_torus[2][3][3] == 0.0
 
-    ## test with hole
+    ## test cube with hole
     newfaces_hole = catmullclark(faces[2:end], 2)
-
     @test newfaces_hole[1][2][1] == 0.9375
     @test newfaces_hole[1][2][2] ≈ -0.46875003
     @test newfaces_hole[1][2][3] == 0.0
