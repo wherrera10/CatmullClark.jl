@@ -71,7 +71,7 @@ exsmple/demo.jl in this package for an example of usage.
 
 ## Example
 
-    using Makie, CatmullClark
+    using GLMakie, CatmullClark
     
     const inputpoints = [
         [-1.0, -1.0, -1.0],
@@ -147,7 +147,7 @@ exsmple/demo.jl in this package for an example of usage.
 
 ## Installation
 
-The package generally requires Makie and its GeometryBasics, at least for the geometry types defined via that package.
+The package generally requires GLMakie and its GeometryBasics, at least for the geometry types defined via that package. Other Makie types could also work with the code if its import line is patched.
 
 You may install the package from Github in the usual way, or to install the current master copy:
 
