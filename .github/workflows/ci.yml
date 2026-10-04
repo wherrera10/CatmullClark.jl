@@ -40,22 +40,33 @@ jobs:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v1
         with:
           version: '1'
+      
+      # Install Xvfb and Mesa OpenGL utilities for Documenter build
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri libglx-mesa0
+
       - run: |
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
             Pkg.instantiate()'
-      - run: |
-          julia --project=docs -e '
+            
+      - name: Run doctests with virtual display
+        run: |
+          xvfb-run --auto-servernum julia --project=docs -e '
             using Documenter: doctest
             using CatmullClark
-            doctest(CatmullClark)' 
-      - run: julia --project=docs docs/make.jl
+            doctest(CatmullClark)'
+            
+      - name: Build and deploy documentation with virtual display
+        run: |
+          xvfb-run --auto-servernum julia --project=docs docs/make.jl
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
-          
