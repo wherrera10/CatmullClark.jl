@@ -145,7 +145,7 @@ exsmple/demo.jl in this package for an example of usage.
 
 ## Installation
 
-The package generally requires GLMakie and its GeometryBasics, at least for the geometry types defined via that package. Other Makie types could also work with the code if its import line is patched.
+The package requires GLMakie and GeometryBasics. Other plotting and geometry modules could work with the code, but might require creating a dev repository and changing the import lines to the desired backend.
 
 You may install the package from Github in the usual way, or to install the current master copy:
 
